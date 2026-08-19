@@ -191,6 +191,13 @@ export default function Error({
         <p className="md:text-lg xl:text-xl text-gray-500 mt-4">
           Whoops, something went wrong on our servers.
         </p>
+        <button
+          type="button"
+          onClick={() => reset()}
+          className="mt-6 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors cursor-pointer"
+        >
+          Try again
+        </button>
       </div>
     </div>
   );

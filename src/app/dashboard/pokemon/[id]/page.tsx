@@ -4,7 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 // Only build time
@@ -16,14 +16,14 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const { id, name } = await getPokemon(params.id);
+    const { id: paramId } = await params;
+    const { id, name } = await getPokemon(paramId);
 
     return {
       title: `#${id} - ${name}`,
       description: `This is the page of ${name}`,
     };
-  } catch (error) {
-    console.log(error);
+  } catch {
     return {
       title: "Pokemon Page",
       description: "This is the page of a pokemon",
@@ -32,23 +32,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const getPokemon = async (id: string): Promise<Pokemon> => {
-  try {
-    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-      // cache: "force-cache",
-      next: { revalidate: 60 * 60 * 24 },
-    }).then((res) => res.json());
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+    // cache: "force-cache",
+    next: { revalidate: 60 * 60 * 24 },
+  });
 
-    console.log(pokemon);
-
-    return pokemon;
-  } catch (error) {
-    console.log(error);
-    notFound();
+  if (!res.ok) {
+    throw new Error(`Pokemon with ID ${id} not found`);
   }
+
+  const pokemon = await res.json();
+  return pokemon;
 };
 
 export default async function PokemonPage({ params }: Props) {
-  const pokemon = await getPokemon(params.id);
+  let pokemon: Pokemon;
+  try {
+    const { id } = await params;
+    pokemon = await getPokemon(id);
+  } catch {
+    notFound();
+  }
 
   return (
     <div className="flex mt-5 flex-col items-center text-slate-800">

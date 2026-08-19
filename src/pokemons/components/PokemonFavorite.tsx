@@ -9,7 +9,11 @@ export const PokemonFavorite = () => {
   const pokemonFavorites = Object.values(pokemons);
   return (
     <>
-      {pokemonFavorites.length > 0 ? <PokemonGrid pokemons={pokemonFavorites} /> : <NoFavorites />}
+      {pokemonFavorites.length > 0 ? (
+        <PokemonGrid pokemons={pokemonFavorites} />
+      ) : (
+        <NoFavorites />
+      )}
     </>
   );
 };

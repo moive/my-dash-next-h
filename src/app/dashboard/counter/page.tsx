@@ -10,7 +10,7 @@ export default function CounterPage() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <span>Producs in the shopping cart</span>
-      <CartCounter value={20} />
+      <CartCounter />
     </div>
   );
 }

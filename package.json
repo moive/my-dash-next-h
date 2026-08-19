@@ -1,10 +1,13 @@
 {
-  "name": "my-dash-h-moi",
+  "name": "my-dash-next-h",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -17,14 +20,13 @@
     "react-redux": "^9.3.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.6",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "eslint": "^10.8.1",
+    "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.1",
     "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3"
   }
 }
