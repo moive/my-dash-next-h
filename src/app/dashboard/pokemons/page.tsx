@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { PokemonGrid, PokemonsResponse, SimplePokemon } from "@/pokemons";
+import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 
 export const metadata: Metadata = {
   title: "List Pokemons",
@@ -26,6 +27,16 @@ const getPokemons = async (
 
 export default async function PokemonsPage() {
   "use cache";
+
+  cacheTag("pokemons");
+
+  cacheLife({
+    stale: 10, // 10 seconds until considered stale
+    revalidate: 60, // 1 minute until revalidated
+  });
+
+  revalidateTag("pokemons", "max");
+
   const pokemons = await getPokemons(151);
 
   return (

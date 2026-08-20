@@ -1,5 +1,6 @@
 import { Pokemon } from "@/pokemons";
 import { Metadata } from "next";
+import { cacheTag } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -32,6 +33,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const getPokemon = async (id: string): Promise<Pokemon> => {
+  "use cache";
+  cacheTag("pokemon", id);
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
     // cache: "force-cache",
     next: { revalidate: 60 * 60 * 24 },
@@ -93,7 +96,9 @@ export default async function PokemonPage({ params }: Props) {
 
           <div className="flex flex-col items-start justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg ">
             <p className="text-sm text-gray-600">Peso</p>
-            <span className="text-base font-medium text-navy-700 flex">{pokemon.weight}</span>
+            <span className="text-base font-medium text-navy-700 flex">
+              {pokemon.weight}
+            </span>
           </div>
 
           <div className="flex flex-col justify-center rounded-2xl bg-white bg-clip-border px-3 py-4  drop-shadow-lg">
